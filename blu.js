@@ -13,11 +13,12 @@ module.exports = {
     if (!prompt) return sendMessage(senderId, { text: "Usage: blu <question>" }, pageAccessToken);
 
     try {
-      const { data: { result } } = await axios.get(`https://joshweb.click/api/gpt-4o?q=${encodeURIComponent(prompt)}&uid=${senderId}`);
+      const { data } = await axios.get(`https://joshweb.click/api/gpt-4o?q=${encodeURIComponent(prompt)}&uid=${senderId}`);
+      const result = data.result || 'No response from API';
       sendMessage(senderId, { text: result }, pageAccessToken);
     } catch (error) {
+      console.error(error); // Log the error for debugging
       sendMessage(senderId, { text: 'There was an error generating the content. Please try again later.' }, pageAccessToken);
     }
   }
 };
-
